@@ -60,7 +60,6 @@ public class DigitalVideoDisc {
         this.director = director;
         this.length = length;
         this.cost = cost;
+        
     }
-
-    
 }
