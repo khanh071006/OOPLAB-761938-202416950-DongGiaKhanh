@@ -18,4 +18,4 @@ Khi đó, thay vì dùng luật chung của lớp cha Media, đĩa DVD sẽ tự
 
 Ưu tiên 2: Nếu tên trùng nhau hoàn toàn, tiếp tục xét đến thời lượng video (length) theo thứ tự giảm dần.
 
-Ưu tiên 3: Cuối cùng, nếu cả tên lẫn độ dài đều y đúc, hệ thống mới mang giá tiền (cost) ra làm "trọng tài" phân định.
+Ưu tiên 3: Cuối cùng, nếu cả tên lẫn độ dài đều y đúc, hệ thống mới mang giá tiền (cost) ra làm "trọng tài" phân định. 
