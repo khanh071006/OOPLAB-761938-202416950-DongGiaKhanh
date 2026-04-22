@@ -1,0 +1,21 @@
+1. What class should implement the Comparable interface?
+Thay vì phải cặm cụi định nghĩa lại luật so sánh cho từng loại riêng lẻ, cách tiếp cận chuẩn mực nhất trong thiết kế hướng đối tượng là để lớp trừu tượng Media thực thi (implement) interface Comparable. Bởi vì Media đóng vai trò là gốc rễ – đại diện chung cho mọi loại hình sản phẩm như đĩa DVD, CD hay Sách – nên khi ta định nghĩa hàm compareTo() ngay tại đây, tất cả các lớp con sẽ tự động được kế thừa quy tắc sắp xếp này. Việc "gom" logic về một mối như vậy không chỉ giúp mã nguồn sạch sẽ, tránh dư thừa code mà còn đảm bảo tính nhất quán tuyệt đối cho toàn bộ cấu trúc hệ thống.
+
+2. In those classes, how should you implement the compareTo() method to reflect the ordering that we want?
+Để phương thức compareTo() thực sự phản ánh đúng ý đồ sắp xếp tự nhiên (natural ordering), ta cần thiết lập một trình tự ưu tiên rõ ràng bên trong nó. Cụ thể, khối lệnh sẽ bắt đầu bằng việc kiểm tra tiêu đề (title) và sắp xếp chúng theo đúng thứ tự từ điển (A-Z). Trong trường hợp xảy ra "đụng hàng" – tức là hai sản phẩm có tên giống hệt nhau – thì tiêu chí thứ hai mới bắt đầu phát huy tác dụng. Lúc này, phương thức sẽ chuyển sang so sánh đến giá tiền (cost) và ưu tiên xếp theo chiều hướng giảm dần. Cách triển khai phân tầng từ chính đến phụ như vậy giúp việc phân loại trở nên rất chặt chẽ.
+
+3. Can we have two ordering rules of the item (by title then cost and by cost then title) if we use this Comparable interface approach?
+Câu trả lời ngắn gọn là không. Giới hạn lớn nhất của interface Comparable nằm ở chỗ nó chỉ cho phép hệ thống "chốt" duy nhất một quy tắc sắp xếp mặc định (thông qua một hàm compareTo() duy nhất gắn liền với lớp).
+
+Nếu muốn hệ thống linh hoạt hơn, ví dụ như cho phép người dùng tùy chọn lúc thì xếp theo "Tiêu đề trước, Giá sau", lúc lại đổi sang "Giá trước, Tiêu đề sau", chúng ta bắt buộc phải chuyển sang sử dụng interface Comparator. Lợi thế của Comparator là cho phép chúng ta đẻ ra vô số các "bộ quy tắc" so sánh khác nhau dưới dạng các lớp (hoặc đối tượng) hoạt động hoàn toàn độc lập. Nhờ đó, bạn có thể áp dụng linh hoạt bất cứ luật sắp xếp nào mình muốn tại thời điểm chạy mà không cần phải can thiệp hay sửa đổi mã nguồn cốt lõi của lớp Media.
+
+4. Suppose the DVDs has a different ordering rule from the other media types, that is by title, then decreasing length, then cost. How would you modify your code to allow this?
+Trong thực tế, luôn có những trường hợp cần sự "đặc cách". Khi đĩa DVD yêu cầu một bộ luật sắp xếp phức tạp và khác biệt so với phần còn lại, cách giải quyết đơn giản và thanh lịch nhất là sử dụng kỹ thuật ghi đè (override) lại hàm compareTo() ngay bên trong chính lớp con DigitalVideoDisc.
+
+Khi đó, thay vì dùng luật chung của lớp cha Media, đĩa DVD sẽ tự định nghĩa lại trình tự kiểm tra của riêng nó bằng các luồng điều kiện (if-else):
+
+Ưu tiên 1: Vẫn là dò theo bảng chữ cái của tiêu đề (title).
+
+Ưu tiên 2: Nếu tên trùng nhau hoàn toàn, tiếp tục xét đến thời lượng video (length) theo thứ tự giảm dần.
+
+Ưu tiên 3: Cuối cùng, nếu cả tên lẫn độ dài đều y đúc, hệ thống mới mang giá tiền (cost) ra làm "trọng tài" phân định.
